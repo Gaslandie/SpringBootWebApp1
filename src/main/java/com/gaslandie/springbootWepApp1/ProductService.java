@@ -1,6 +1,7 @@
 package com.gaslandie.springbootWepApp1;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,15 @@ public class ProductService {
 
     public List<Product> getAllProducts(){
         return db.findAll();
+    }
+
+    public Product getProduct(int id) {
+        return db.findById(id).orElse(null);
+    }
+
+    public void addProduct(Product p) {
+        // TODO Auto-generated method stub
+        db.save(p);
     }
 
     // public Product getProduct(String name){
