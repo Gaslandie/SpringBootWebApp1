@@ -1,7 +1,6 @@
 package com.gaslandie.springbootWepApp1;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,11 +26,7 @@ public class ProductService {
         db.save(p);
     }
 
-    // public Product getProduct(String name){
-    //     for(Product p : products){
-    //         if(p.getName().equals(name))
-    //             return p;
-    //     }
-    //     return null;
-    // }
+    public void deleteProduct(int id){
+        db.deleteById(id);
+    }
 }
