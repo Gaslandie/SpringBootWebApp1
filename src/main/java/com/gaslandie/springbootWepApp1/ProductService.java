@@ -1,8 +1,11 @@
 package com.gaslandie.springbootWepApp1;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,25 +15,49 @@ import jakarta.persistence.EntityNotFoundException;
 public class ProductService {
     @Autowired //spring va creer et gerer notre objet
     ProductDB db;
-    // public void addProduct(Product p){
-    //     db.save(p);
-    // }
+    
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     //recuperer tous les produits
     public List<Product> getAllProducts(){
-        return db.findAll();
+        try {
+            return db.findAll();
+        } catch (Exception e) {
+            //enregistrer le message d'erreur detaillé dans les journaux
+            logger.error("Error when fetching data from database", e);
+
+            //En cas d'erreur ,renvoyer une liste vide plutot que de propager l'exception
+            return Collections.emptyList();
+        }
+        
     }
     //recuperer un produit
     public Product getProduct(int id) {
-        return db.findById(id).orElse(null);
+        try {
+            return db.findById(id).orElse(null);
+        } catch (Exception e) {
+           logger.error("error when fetch data form database",e);
+           return null;
+        }
+        
     }
     //ajouter un produit
     public void addProduct(Product p) {
-        
-        db.save(p);
+        try {
+            db.save(p);
+        } catch (Exception e) {
+            logger.error("error when adding a product to the database", e);
+        }
+       
     }
     //supprimer un produit
     public void deleteProduct(int id){
-        db.deleteById(id);
+        try {
+            db.deleteById(id);
+        } catch (Exception e) {
+            logger.error("error when trying to delete a product",e);
+        }
+        
     }
     //mettre à jour un produit
     public Product updateProduct(int id,Product updatedProduct){
